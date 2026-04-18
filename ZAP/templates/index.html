@@ -1,0 +1,345 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="text-center mb-5 hero-section">
+    <h1 class="display-3 fw-bold text-uppercase animate__animated animate__fadeInDown">Welcome to <span class="text-danger">ZAP EATS</span></h1>
+    <p class="lead animate__animated animate__fadeInUp animate__delay-1s">Discover the authentic flavors of Indian cuisine</p>
+    <div class="mt-4 animate__animated animate__fadeInUp animate__delay-2s">
+        <div class="d-flex justify-content-center gap-3">
+            <a href="#menu" class="btn btn-primary">
+                <i class="fas fa-utensils me-2"></i>View Menu
+            </a>
+            {% if not current_user.is_authenticated %}
+            <a href="{{ url_for('signup') }}" class="btn btn-outline-danger">
+                <i class="fas fa-user-plus me-2"></i>Join Now
+            </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="row mb-5">
+    <div class="col-md-4 mb-4">
+        <div class="feature-card text-center p-4 animate__animated animate__fadeInLeft">
+            <div class="feature-icon">
+                <i class="fas fa-truck-fast"></i>
+            </div>
+            <h4>Fast Delivery</h4>
+            <p>We deliver your order promptly to your doorstep</p>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="feature-card text-center p-4 animate__animated animate__fadeInUp">
+            <div class="feature-icon">
+                <i class="fas fa-leaf"></i>
+            </div>
+            <h4>Fresh Food</h4>
+            <p>Prepared with premium ingredients and authentic spices</p>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="feature-card text-center p-4 animate__animated animate__fadeInRight">
+            <div class="feature-icon">
+                <i class="fas fa-star"></i>
+            </div>
+            <h4>Best Quality</h4>
+            <p>Taste the difference with our chef's special recipes</p>
+        </div>
+    </div>
+</div>
+
+<h2 class="text-center mb-4 section-title" id="menu">Our Menu</h2>
+
+<div class="category-filter text-center mb-4">
+    <button class="btn btn-filter active" data-filter="all">All</button>
+    <button class="btn btn-filter" data-filter="1">Starters</button>
+    <button class="btn btn-filter" data-filter="2">Main Course</button>
+    <button class="btn btn-filter" data-filter="3">Breads</button>
+    <button class="btn btn-filter" data-filter="4">Desserts</button>
+    <button class="btn btn-filter" data-filter="5">Beverages</button>
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for product in products %}
+    <div class="col menu-item" data-category="{{ product.category_id }}">
+        <div class="card h-100 product-card">
+            <div class="card-img-wrapper">
+                <img src="{{ product.image_url }}" class="card-img-top" alt="{{ product.name }}" loading="lazy">
+                <div class="card-img-overlay">
+                    <span class="badge bg-danger">{{ "%.2f"|format(product.price) }} ₹</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text">{{ product.description }}</p>
+                {% if current_user.is_authenticated %}
+                <form action="{{ url_for('add_to_cart', product_id=product.id) }}" method="POST" class="add-to-cart-form">
+                    <div class="quantity-control mb-3">
+                        <button type="button" class="btn btn-outline-danger btn-sm quantity-btn" data-action="decrease">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <input type="number" class="form-control quantity-input" name="quantity" value="1" min="1" max="10" readonly>
+                        <button type="button" class="btn btn-outline-danger btn-sm quantity-btn" data-action="increase">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 add-to-cart-btn">
+                        <i class="fas fa-cart-plus me-2"></i>Add to Cart
+                    </button>
+                </form>
+                {% else %}
+                <a href="{{ url_for('login') }}" class="btn btn-primary w-100">
+                    <i class="fas fa-sign-in-alt me-2"></i>Login to Order
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<style>
+    .hero-section {
+        padding: 60px 0;
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1585937421612-70a008356cf4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1936&q=80');
+        background-size: cover;
+        background-position: center;
+        color: white;
+        border-radius: 15px;
+        margin-bottom: 50px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .hero-section::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 5px;
+        background: linear-gradient(to right, var(--primary-color), transparent);
+    }
+    
+    .section-title {
+        font-weight: 800;
+        position: relative;
+        margin-bottom: 40px;
+        color: black;
+        text-transform: uppercase;
+    }
+    
+    .section-title::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: -10px;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    }
+    
+    .feature-card {
+        background-color: white;
+        border-radius: var(--border-radius);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        height: 100%;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(255,0,0,0.2);
+    }
+    
+    .feature-icon {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 15px;
+    }
+    
+    .btn-outline-danger {
+        color: var(--primary-color);
+        border-color: var(--primary-color);
+        border-radius: 25px;
+        padding: 10px 25px;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-outline-danger:hover {
+        background-color: var(--primary-color);
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(255,0,0,0.3);
+    }
+    
+    .card-img-wrapper {
+        position: relative;
+        overflow: hidden;
+        height: 200px;
+    }
+    
+    .card-img-top {
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    
+    .product-card:hover .card-img-top {
+        transform: scale(1.1);
+    }
+    
+    .card-img-overlay {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        padding: 0;
+        transition: all 0.3s ease;
+    }
+    
+    .badge {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+        font-weight: 600;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    
+    .card-title {
+        font-weight: 700;
+        font-size: 1.25rem;
+        color: var(--secondary-color);
+        margin-bottom: 10px;
+        border-bottom: 2px solid rgba(255,0,0,0.1);
+        padding-bottom: 10px;
+    }
+    
+    .card-text {
+        color: #666;
+        font-size: 0.95rem;
+        margin-bottom: 20px;
+    }
+    
+    .quantity-control {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 25px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .quantity-input {
+        border: none;
+        text-align: center;
+        width: 60px;
+        padding: 8px;
+        background-color: white;
+        font-weight: 600;
+    }
+    
+    .quantity-btn {
+        border: none;
+        background-color: white;
+        color: var(--primary-color);
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+    }
+    
+    .quantity-btn:hover {
+        background-color: rgba(255,0,0,0.1);
+        color: var(--primary-color);
+    }
+    
+    .add-to-cart-btn {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .add-to-cart-btn::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 150%;
+        height: 150%;
+        background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+        transition: transform 0.5s, opacity 0.5s;
+    }
+    
+    .add-to-cart-btn:active::after {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+    
+    .btn-filter {
+        margin: 0 5px;
+        border-radius: 25px;
+        background-color: #f8f9fa;
+        color: #333;
+        border: none;
+        padding: 8px 16px;
+        transition: all 0.3s ease;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+    
+    .btn-filter.active, .btn-filter:hover {
+        background-color: var(--primary-color);
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 10px rgba(255,0,0,0.3);
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Quantity buttons functionality
+        const quantityBtns = document.querySelectorAll('.quantity-btn');
+        quantityBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const action = this.dataset.action;
+                const input = this.parentNode.querySelector('.quantity-input');
+                let value = parseInt(input.value);
+                
+                if (action === 'increase' && value < 10) {
+                    input.value = value + 1;
+                } else if (action === 'decrease' && value > 1) {
+                    input.value = value - 1;
+                }
+            });
+        });
+        
+        // Filter menu items by category
+        const filterBtns = document.querySelectorAll('.btn-filter');
+        const menuItems = document.querySelectorAll('.menu-item');
+        
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const filter = this.dataset.filter;
+                
+                // Update active button
+                filterBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Filter items
+                menuItems.forEach(item => {
+                    if (filter === 'all' || item.dataset.category === filter) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+    });
+</script>
+{% endblock %} 

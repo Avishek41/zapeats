@@ -1,0 +1,514 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout{% endblock %}
+
+{% block content %}
+<div class="checkout-container">
+    <h2 class="section-title text-center mb-4">Secure Checkout</h2>
+    
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card checkout-card">
+                <div class="card-body">
+                    <div class="checkout-header">
+                        <h4 class="mb-4"><i class="fas fa-shipping-fast me-2"></i>Shipping Details</h4>
+                    </div>
+                    
+                    <form id="checkout-form" method="POST" action="{{ url_for('process_checkout') }}">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="first-name" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="first-name" name="first_name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="last-name" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="last-name" name="last_name" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="phone" name="phone" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Delivery Address</label>
+                            <input type="text" class="form-control" id="address" name="address" required>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-5 mb-3">
+                                <label for="city" class="form-label">City</label>
+                                <input type="text" class="form-control" id="city" name="city" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="state" class="form-label">State</label>
+                                <select class="form-select" id="state" name="state" required>
+                                    <option value="">Choose...</option>
+                                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                                    <option value="Delhi">Delhi</option>
+                                    <option value="Gujarat">Gujarat</option>
+                                    <option value="Karnataka">Karnataka</option>
+                                    <option value="Maharashtra">Maharashtra</option>
+                                    <option value="Tamil Nadu">Tamil Nadu</option>
+                                    <option value="Telangana">Telangana</option>
+                                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                                    <option value="West Bengal">West Bengal</option>
+                                    <!-- Add more states as needed -->
+                                </select>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="zip" class="form-label">PIN Code</label>
+                                <input type="text" class="form-control" id="zip" name="zip" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="delivery-instructions" class="form-label">Delivery Instructions (Optional)</label>
+                            <textarea class="form-control" id="delivery-instructions" name="delivery_instructions" rows="2"></textarea>
+                        </div>
+                        
+                        <hr class="divider">
+                        
+                        <div class="checkout-header mt-4">
+                            <h4 class="mb-4"><i class="fas fa-credit-card me-2"></i>Payment Method</h4>
+                        </div>
+                        
+                        <div class="payment-methods mb-4">
+                            <div class="form-check payment-method-option mb-3">
+                                <input class="form-check-input" type="radio" name="payment_method" id="credit-card" value="credit_card" checked>
+                                <label class="form-check-label d-flex align-items-center" for="credit-card">
+                                    <span class="ms-2">Credit/Debit Card</span>
+                                    <span class="ms-auto payment-icons">
+                                        <i class="fab fa-cc-visa mx-1"></i>
+                                        <i class="fab fa-cc-mastercard mx-1"></i>
+                                        <i class="fab fa-cc-amex mx-1"></i>
+                                    </span>
+                                </label>
+                            </div>
+                            
+                            <div id="card-details" class="card-payment-details mb-4">
+                                <div class="row">
+                                    <div class="col-md-12 mb-3">
+                                        <label for="card-number" class="form-label">Card Number</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="card-number" placeholder="1234 5678 9012 3456" required>
+                                            <span class="input-group-text bg-white">
+                                                <i class="fas fa-credit-card text-muted"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="expiry-date" class="form-label">Expiry Date</label>
+                                        <input type="text" class="form-control" id="expiry-date" placeholder="MM/YY" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="cvv" class="form-label">CVV</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="cvv" placeholder="123" required>
+                                            <span class="input-group-text bg-white" data-bs-toggle="tooltip" data-bs-placement="top" title="3-digit code on the back of your card">
+                                                <i class="fas fa-question-circle text-muted"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="card-name" class="form-label">Name on Card</label>
+                                    <input type="text" class="form-control" id="card-name" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-check payment-method-option mb-3">
+                                <input class="form-check-input" type="radio" name="payment_method" id="upi" value="upi">
+                                <label class="form-check-label d-flex align-items-center" for="upi">
+                                    <span class="ms-2">UPI</span>
+                                    <span class="ms-auto payment-icons">
+                                        <i class="fab fa-google-pay mx-1"></i>
+                                        <i class="fab fa-amazon-pay mx-1"></i>
+                                    </span>
+                                </label>
+                            </div>
+                            
+                            <div id="upi-details" class="upi-payment-details mb-4 d-none">
+                                <div class="mb-3">
+                                    <label for="upi-id" class="form-label">UPI ID</label>
+                                    <input type="text" class="form-control" id="upi-id" placeholder="yourname@upi">
+                                </div>
+                            </div>
+                            
+                            <div class="form-check payment-method-option mb-3">
+                                <input class="form-check-input" type="radio" name="payment_method" id="cod" value="cod">
+                                <label class="form-check-label d-flex align-items-center" for="cod">
+                                    <span class="ms-2">Cash on Delivery</span>
+                                    <span class="ms-auto">
+                                        <i class="fas fa-money-bill-wave"></i>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-4 mt-4 mt-lg-0">
+            <div class="card order-summary-card">
+                <div class="card-body">
+                    <h5 class="mb-4"><i class="fas fa-receipt me-2"></i>Order Summary</h5>
+                    
+                    <div class="order-items-summary">
+                        {% for item in cart_items %}
+                        <div class="order-item d-flex justify-content-between align-items-center">
+                            <div class="item-info d-flex align-items-center">
+                                <span class="item-quantity">{{ item.quantity }}×</span>
+                                <span class="item-name ms-2">{{ item.name }}</span>
+                            </div>
+                            <span class="item-price">₹{{ "%.2f"|format(item.price * item.quantity) }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="summary-item d-flex justify-content-between">
+                        <span>Subtotal</span>
+                        <span>₹{{ "%.2f"|format(total|float) }}</span>
+                    </div>
+                    <div class="summary-item d-flex justify-content-between">
+                        <span>Delivery</span>
+                        <span class="text-success">Free</span>
+                    </div>
+                    <div class="summary-item d-flex justify-content-between">
+                        <span>Tax</span>
+                        <span>₹{{ "%.2f"|format(total|float * 0.05) }}</span>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="summary-total d-flex justify-content-between align-items-center">
+                        <span>Total</span>
+                        <span class="total-amount">₹{{ "%.2f"|format(total|float + (total|float * 0.05)) }}</span>
+                    </div>
+                    
+                    <div class="promocode mt-3 mb-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Promo code">
+                            <button class="btn btn-outline-danger" type="button">Apply</button>
+                        </div>
+                    </div>
+                    
+                    <div class="checkout-btn-wrapper mt-4">
+                        <button type="submit" form="checkout-form" class="btn btn-primary place-order-btn w-100">
+                            <i class="fas fa-lock me-2"></i>Place Order
+                        </button>
+                    </div>
+                    
+                    <div class="secure-checkout-badge mt-3 text-center">
+                        <small class="text-muted"><i class="fas fa-shield-alt me-1"></i> Secure checkout</small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card delivery-card mt-4">
+                <div class="card-body">
+                    <h5 class="mb-3"><i class="fas fa-truck me-2"></i>Delivery Information</h5>
+                    <div class="delivery-time d-flex justify-content-between align-items-center mb-2">
+                        <span>Estimated Delivery</span>
+                        <span class="fw-bold">30-45 minutes</span>
+                    </div>
+                    <div class="delivery-status">
+                        <div class="progress">
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <div class="status-points d-flex justify-content-between mt-2">
+                            <small class="text-success">Order Placed</small>
+                            <small class="text-muted">Preparing</small>
+                            <small class="text-muted">On the Way</small>
+                            <small class="text-muted">Delivered</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .checkout-container {
+        padding: 30px 15px 60px;
+    }
+    
+    .section-title {
+        font-weight: 800;
+        position: relative;
+        margin-bottom: 40px;
+        text-transform: uppercase;
+    }
+    
+    .section-title::after {
+        content: '';
+        position: absolute;
+        left: 50%;
+        bottom: -10px;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: var(--gradient);
+    }
+    
+    .checkout-card, .order-summary-card, .delivery-card {
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+        margin-bottom: 20px;
+    }
+    
+    .checkout-card:hover, .order-summary-card:hover, .delivery-card:hover {
+        box-shadow: 0 15px 40px rgba(255,0,0,0.15);
+        transform: translateY(-5px);
+    }
+    
+    .card-body {
+        padding: 25px;
+    }
+    
+    .checkout-header {
+        position: relative;
+    }
+    
+    .checkout-header h4 {
+        font-weight: 700;
+        color: var(--text-color);
+    }
+    
+    .checkout-header h4 i {
+        color: var(--primary-color);
+    }
+    
+    .form-label {
+        font-weight: 500;
+        color: var(--text-color);
+        margin-bottom: 8px;
+    }
+    
+    .form-control, .form-select {
+        padding: 12px 15px;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus, .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(255,0,0,0.1);
+    }
+    
+    .divider {
+        height: 1px;
+        background: linear-gradient(to right, rgba(0,0,0,0.05), rgba(255,0,0,0.2), rgba(0,0,0,0.05));
+        margin: 25px 0;
+        border: none;
+    }
+    
+    .payment-method-option {
+        background: #f9f9f9;
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px solid #eeeeee;
+        transition: all 0.3s ease;
+    }
+    
+    .payment-method-option:hover {
+        background: #f5f5f5;
+        border-color: #dddddd;
+    }
+    
+    .form-check-input:checked {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+    
+    .form-check-input:checked ~ .form-check-label {
+        font-weight: 600;
+    }
+    
+    .payment-icons i {
+        font-size: 1.2rem;
+        opacity: 0.8;
+    }
+    
+    .card-payment-details, .upi-payment-details {
+        background: #f9f9f9;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 15px;
+        border: 1px solid #eeeeee;
+    }
+    
+    .order-item {
+        padding: 8px 0;
+        font-size: 0.95rem;
+    }
+    
+    .item-quantity {
+        background: var(--primary-color);
+        color: white;
+        padding: 2px 6px;
+        border-radius: 50%;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+    
+    .item-name {
+        font-weight: 500;
+    }
+    
+    .summary-item {
+        padding: 8px 0;
+        font-size: 0.95rem;
+    }
+    
+    .summary-total {
+        padding: 10px 0;
+        font-weight: 700;
+        font-size: 1.1rem;
+    }
+    
+    .total-amount {
+        color: var(--primary-color);
+        font-size: 1.2rem;
+    }
+    
+    .place-order-btn {
+        padding: 12px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        background: var(--gradient);
+        border: none;
+        transition: all 0.3s ease;
+    }
+    
+    .place-order-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(255,0,0,0.3);
+        background: var(--gradient-dark);
+    }
+    
+    .secure-checkout-badge {
+        opacity: 0.7;
+    }
+    
+    .delivery-time {
+        font-size: 0.95rem;
+    }
+    
+    .progress {
+        height: 8px;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+    
+    .status-points {
+        font-size: 0.7rem;
+    }
+    
+    /* Mobile responsive fixes */
+    @media (max-width: 767.98px) {
+        .checkout-container {
+            padding: 20px 15px 40px;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        .form-control, .form-select {
+            padding: 10px;
+        }
+        
+        .card-payment-details, .upi-payment-details {
+            padding: 15px;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Payment method toggle
+        const paymentMethodRadios = document.querySelectorAll('input[name="payment_method"]');
+        const cardDetails = document.getElementById('card-details');
+        const upiDetails = document.getElementById('upi-details');
+        
+        paymentMethodRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                if (this.value === 'credit_card') {
+                    cardDetails.classList.remove('d-none');
+                    upiDetails.classList.add('d-none');
+                } else if (this.value === 'upi') {
+                    cardDetails.classList.add('d-none');
+                    upiDetails.classList.remove('d-none');
+                } else {
+                    cardDetails.classList.add('d-none');
+                    upiDetails.classList.add('d-none');
+                }
+            });
+        });
+        
+        // Card number formatting
+        const cardNumberInput = document.getElementById('card-number');
+        if (cardNumberInput) {
+            cardNumberInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                let formattedValue = '';
+                
+                for (let i = 0; i < value.length; i++) {
+                    if (i > 0 && i % 4 === 0) {
+                        formattedValue += ' ';
+                    }
+                    formattedValue += value[i];
+                }
+                
+                e.target.value = formattedValue.slice(0, 19); // Limit to 16 digits + 3 spaces
+            });
+        }
+        
+        // Expiry date formatting
+        const expiryDateInput = document.getElementById('expiry-date');
+        if (expiryDateInput) {
+            expiryDateInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                
+                if (value.length > 2) {
+                    value = value.slice(0, 2) + '/' + value.slice(2, 4);
+                }
+                
+                e.target.value = value.slice(0, 5); // MM/YY format
+            });
+        }
+        
+        // CVV formatting
+        const cvvInput = document.getElementById('cvv');
+        if (cvvInput) {
+            cvvInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+                e.target.value = value.slice(0, 3); // Limit to 3 digits
+            });
+        }
+        
+        // Initialize tooltips
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    });
+</script>
+{% endblock %} 
