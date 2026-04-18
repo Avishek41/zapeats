@@ -40,8 +40,12 @@ def load_user(user_id):
         return User(user_data['id'], user_data['username'], user_data['email'])
     return None
 
+import sqlite3
+
 def get_db_connection():
-    return mysql.connector.connect(**db_config)
+    conn = sqlite3.connect('database.db')
+    conn.row_factory = sqlite3.Row
+    return conn
 
 @app.route('/')
 def index():
