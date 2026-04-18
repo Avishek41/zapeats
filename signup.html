@@ -1,0 +1,362 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card auth-card">
+                <div class="row g-0">
+                    <div class="col-md-5 auth-side-banner">
+                        <div class="auth-side-content">
+                            <div class="brand-logo">
+                                <i class="fas fa-utensils fa-3x"></i>
+                                <h3 class="mt-3">ZAP EATS</h3>
+                            </div>
+                            <h2 class="mt-4">Join Us Today</h2>
+                            <p>Create an account and start your culinary journey</p>
+                            <div class="decorative-pattern"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card-body p-4 p-md-5">
+                            <h4 class="mb-4 text-center">Create Your Account</h4>
+                            
+                            <form method="POST" action="{{ url_for('signup') }}" class="signup-form">
+                                <div class="form-group mb-3">
+                                    <label for="username" class="form-label">Username</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-transparent border-end-0">
+                                            <i class="fas fa-user text-muted"></i>
+                                        </span>
+                                        <input type="text" class="form-control border-start-0" id="username" name="username" placeholder="Choose a username" required>
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="email" class="form-label">Email address</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-transparent border-end-0">
+                                            <i class="fas fa-envelope text-muted"></i>
+                                        </span>
+                                        <input type="email" class="form-control border-start-0" id="email" name="email" placeholder="Your email" required>
+                                    </div>
+                                    <small class="form-text text-muted">We'll never share your email with anyone else.</small>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label for="password" class="form-label">Password</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-transparent border-end-0">
+                                            <i class="fas fa-lock text-muted"></i>
+                                        </span>
+                                        <input type="password" class="form-control border-start-0" id="password" name="password" placeholder="Create password" required>
+                                        <span class="input-group-text bg-transparent border-start-0 password-toggle">
+                                            <i class="fas fa-eye-slash text-muted"></i>
+                                        </span>
+                                    </div>
+                                    <div class="password-strength mt-2 d-none">
+                                        <div class="progress" style="height: 5px;">
+                                            <div class="progress-bar bg-danger" role="progressbar" style="width: 0%"></div>
+                                        </div>
+                                        <small class="password-feedback text-muted"></small>
+                                    </div>
+                                </div>
+                                <div class="form-check mb-4">
+                                    <input class="form-check-input" type="checkbox" id="agree-terms" required>
+                                    <label class="form-check-label" for="agree-terms">
+                                        I agree to the <a href="#" class="text-danger">Terms & Conditions</a>
+                                    </label>
+                                </div>
+                                <div class="d-grid mb-4">
+                                    <button type="submit" class="btn btn-primary signup-btn">
+                                        <i class="fas fa-user-plus me-2"></i>Create Account
+                                    </button>
+                                </div>
+                            </form>
+                            
+                            <div class="text-center">
+                                <p class="mb-0">Already have an account? <a href="{{ url_for('login') }}" class="text-danger fw-bold text-decoration-none">Login</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .auth-container {
+        min-height: calc(100vh - 200px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+    }
+    
+    .auth-card {
+        border: none;
+        box-shadow: 0 10px 35px rgba(0,0,0,0.2);
+        border-radius: 15px;
+        overflow: hidden;
+        margin-bottom: 30px;
+        width: 150%;
+        background-color: var(--light-color);
+    }
+    
+    .auth-side-banner {
+        background: var(--gradient-dark);
+        color: white;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        min-height: 600px;
+    }
+    
+    .auth-side-banner::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%%;
+        height: 100%;
+        background-image: 
+            radial-gradient(circle at 20% 30%, rgba(255, 0, 0, 0.3) 0%, transparent 50%),
+            radial-gradient(circle at 80% 70%, rgba(255, 0, 0, 0.3) 0%, transparent 50%);
+        opacity: 0.8;
+        z-index: 1;
+    }
+    
+    .auth-side-content {
+        position: relative;
+        z-index: 2;
+        padding: 30px;
+        text-align: center;
+    }
+    
+    .auth-side-content h2 {
+        font-size: 2rem;
+        font-weight: 800;
+        margin-bottom: 15px;
+    }
+    
+    .auth-side-content p {
+        opacity: 0.8;
+        margin-bottom: 30px;
+    }
+    
+    .brand-logo {
+        color: var(--light-color);
+        margin-bottom: 20px;
+    }
+    
+    .brand-logo i {
+        filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+    }
+    
+    .decorative-pattern {
+        position: absolute;
+        bottom: 20px;
+        left: 0;
+        width: 100%;
+        height: 40px;
+        background-image: 
+            linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%),
+            linear-gradient(-45deg, rgba(255,255,255,0.1) 25%, transparent 25%);
+        background-size: 20px 20px;
+        opacity: 0.5;
+    }
+    
+    .input-group {
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+    }
+    
+    .input-group:focus-within {
+        box-shadow: 0 2px 15px rgba(255,0,0,0.15);
+    }
+    
+    .input-group-text, .form-control {
+        border-color: #eeeeee;
+        padding: 12px 15px;
+    }
+    
+    .form-control:focus {
+        box-shadow: none;
+        border-color: #eeeeee;
+    }
+    
+    .password-toggle {
+        cursor: pointer;
+    }
+    
+    .form-check-input:checked {
+        background-color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+    
+    .signup-form .btn-primary {
+        padding: 12px;
+        background: var(--gradient);
+        border: none;
+        transition: all 0.3s ease;
+    }
+    
+    .signup-form .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(255,0,0,0.3);
+        background: var(--gradient-dark);
+    }
+    
+    .signup-btn {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .signup-btn::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+        transform: scale(0);
+        transition: transform 0.5s ease-out;
+    }
+    
+    .signup-btn:hover::before {
+        transform: scale(1);
+    }
+    
+    /* Animation */
+    .form-group {
+        animation: fadeIn 0.5s ease-out forwards;
+    }
+    
+    .form-group:nth-child(1) {
+        animation-delay: 0.2s;
+    }
+    
+    .form-group:nth-child(2) {
+        animation-delay: 0.3s;
+    }
+    
+    .form-group:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+    
+    .form-check, .d-grid {
+        opacity: 0;
+        animation: fadeIn 0.5s ease-out forwards;
+        animation-delay: 0.5s;
+    }
+    
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Mobile responsive fixes */
+    @media (max-width: 767.98px) {
+        .auth-container {
+            padding: 20px 15px;
+        }
+        
+        .auth-side-banner {
+            min-height: 200px;
+            border-radius: 15px 15px 0 0;
+        }
+        
+        .auth-side-content {
+            padding: 20px;
+        }
+        
+        .auth-side-content h2 {
+            font-size: 1.5rem;
+        }
+        
+        .card-body {
+            padding: 25px !important;
+        }
+        
+        /* Reduce the animation delay on mobile */
+        .form-group, .form-check, .d-grid {
+            animation-delay: 0.1s !important;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Password visibility toggle
+        const toggleBtn = document.querySelector('.password-toggle');
+        const passwordInput = document.querySelector('#password');
+        
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                
+                // Toggle icon
+                const icon = this.querySelector('i');
+                icon.classList.toggle('fa-eye');
+                icon.classList.toggle('fa-eye-slash');
+            });
+        }
+        
+        // Password strength meter
+        if (passwordInput) {
+            const strengthMeter = document.querySelector('.password-strength');
+            const progressBar = document.querySelector('.progress-bar');
+            const feedback = document.querySelector('.password-feedback');
+            
+            passwordInput.addEventListener('input', function() {
+                const val = passwordInput.value;
+                let strength = 0;
+                let message = '';
+                
+                if (val.length > 0) {
+                    strengthMeter.classList.remove('d-none');
+                } else {
+                    strengthMeter.classList.add('d-none');
+                    return;
+                }
+                
+                // Calculate strength
+                if (val.length >= 8) strength += 20;
+                if (/[a-z]/.test(val)) strength += 20;
+                if (/[A-Z]/.test(val)) strength += 20;
+                if (/[0-9]/.test(val)) strength += 20;
+                if (/[^A-Za-z0-9]/.test(val)) strength += 20;
+                
+                // Update UI
+                progressBar.style.width = strength + '%';
+                
+                if (strength < 40) {
+                    progressBar.className = 'progress-bar bg-danger';
+                    message = 'Weak password';
+                } else if (strength < 80) {
+                    progressBar.className = 'progress-bar bg-warning';
+                    message = 'Moderate password';
+                } else {
+                    progressBar.className = 'progress-bar bg-success';
+                    message = 'Strong password';
+                }
+                
+                feedback.textContent = message;
+            });
+        }
+    });
+</script>
+{% endblock %} 
